@@ -65,28 +65,39 @@
                     }
                 ],
                 show: {
-                        icon: true,
-                        searchbar: false
-                    }
+                    icon: true,
+                    searchbar: false,
+                    bigphoto: false,
+                    havephoto: true
+                },
+                search: ''
+
             }
         },
         methods: {
             favor(index) {
                 this.photos[index].favor = !this.photos[index].favor;
-                this.photos[index].like++
+                this.photos[index].like++;
             },
             toggle() {
-                this.show.icon = !this.show.icon
-                this.show.searchbar = !this.show.searchbar
-            }
+                this.show.icon = !this.show.icon;
+                this.show.searchbar = !this.show.searchbar;
+            },
+         
 
 
         },
         computed: {
             countPhotos() {
-                return this.photos.length
-            }
+                return this.photos.length;
+            },
+            filteredList() {
+                if(this.show.havephoto){
+                return this.photos.filter(post => {
+                  return post.title.toLowerCase().includes(this.search.toLowerCase())
+                })}
+                else return " No photo "
+              }
         }
-
     }
     mountedApp = Vue.createApp(app).mount('#app')

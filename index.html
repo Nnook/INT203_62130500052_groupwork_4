@@ -33,7 +33,7 @@
           <input
             class="ml-2 p-1 w-80 placeholder-gray-500 placeholder-opacity-50 focus:outline-none text-black rounded-sm"
             type="text" v-model="search" placeholder="Please enter text for searching photos">
-          <button class="ml-2 p-1 rounded-sm focus:outline-none bg-blue-500">Cancel</button>
+          <button @click="toggle" class="ml-2 p-1 rounded-sm focus:outline-none bg-blue-500">Cancel</button>
         </div>
 
         <div>
@@ -42,27 +42,43 @@
         </div>
       </div>
 
+      <div v-show class="flex items-center justify-between bg-black text-white h-96">
+
+      </div>
       <div class="m-5">
         <ul class="grid grid-cols-2 gap-y-10 ml-10 lg:grid-cols-5">
-          <li v-for="(photo, index) in photos">
+          <li v-if="show.havephoto = true" v-for="(photo, index) in filteredList">
             <p class="text-lg font-semibold"> {{ photo.title }} </p>
-            <img :src="photo.src" class="h-48 w-32" :alt="photo.title" v-on:click="favor(index)">
+            <img :src="photo.src" class="h-48 w-32" :alt="photo.title" @click="show.bigphoto = true">
+            <div clas="items-center bg-black h-screen w-screen" v-if="show.bigphoto">
+              <img :src="photo.src" class="h-96 w-auto" :alt="photo.title" @click="show.bigphoto">
+            </div>
+            <div class="flex items-center justify-between" v-if="show.bigphoto">
+              <button class="focus:outline-none text-red-500" @click="show.bigphoto = false">
+                <i class="material-icons ">
+                  clear
+                </i>
+              </button>
+             </div>
+
             <div class="flex flex-row justify-start space-x-1">
-              <p v-if="photo.like > 0"> {{photo.like}}
-                <span>like</span>
-              </p>
-              <button @click="favorite(index)" class=" focus:outline-none ">
+              
+              <button v-on:click="favor(index)" class=" focus:outline-none ">
                 <i v-if="photo.like < 1" class="material-icons stroke-current text-black">favorite_border</i>
-                <i v-if="photo.like > 0" class="material-icons fill-current text-red-500">favorite</i>
+                <i v-if="photo.like > 0" class="material-icons fill-current text-red-500">favorite </i>
+                <i v-if="photo.like > 0"> {{photo.like}}
+                <span>like</span>
+                </i>
                 <!-- "you can use "class = fill-current text-red-500" for changing to red color, original is black -->
 
               </button>
 
             </div>
-          </li>
+          </li>  
         </ul>
+        
       </div>
-
+      <p v-if="show.havephoto = false">No photo</p>
     </div>
 
   </div>
